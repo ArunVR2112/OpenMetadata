@@ -13,7 +13,7 @@ SQL Queries used during ingestion
 """
 
 import textwrap
-
+from sqlalchemy import text
 # Column comments in Vertica can only happen on Projections
 #   https://forum.vertica.com/discussion/238945/vertica-try-to-create-comment
 # And Vertica projections follow this naming:
@@ -76,7 +76,7 @@ VERTICA_VIEW_DEFINITION = textwrap.dedent(
     """
 )
 
-VERTICA_LIST_DATABASES = "SELECT database_name from v_catalog.databases"
+VERTICA_LIST_DATABASES = text("SELECT database_name from v_catalog.databases")
 
 VERTICA_TABLE_COMMENTS = textwrap.dedent(
     """
@@ -126,7 +126,8 @@ VERTICA_SQL_STATEMENT = textwrap.dedent(
     """
 )
 
-VERTICA_TEST_GET_QUERIES = """
+VERTICA_TEST_GET_QUERIES = text(
+    """
 SELECT 
 p.query AS query_text
 FROM query_profiles p
@@ -135,3 +136,4 @@ FROM query_profiles p
      AND p.STATEMENT_ID = r.STATEMENT_ID
 LIMIT 1
 """  # noqa: W291
+)
